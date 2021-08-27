@@ -1,7 +1,7 @@
 {
   "name": "validate-azure-token",
   "description": "Validate your bearer token against azure's public keys",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "url": "https://github.com/SjoenH/validate-azure-token"
   },
@@ -23,13 +23,11 @@
     "version": "yarn format && git add -A src"
   },
   "dependencies": {
-    "atob": "^2.1.2",
     "encoding": "^0.1.13",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@types/atob": "^2.1.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node-fetch": "^2.5.12",
     "prettier": "^2.3.2",
