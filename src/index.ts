@@ -7,36 +7,26 @@ import {getMatchingKey} from "./getMatchingKey";
  * @param verifyOptions
  * @returns {*}
  */
-const validateJWTToken = async (token: string, verifyOptions: VerifyOptions | undefined): Promise<any> => {
+const validateToken = async (token: string, verifyOptions: VerifyOptions | undefined): Promise<string | unknown> => {
     return new Promise(async (resolve, reject) => {
-        if (!token) {
-            return reject('Missing JWT token');
-        }
+        if (!token) return reject('Missing JWT token');
+
         const matchingKey = await getMatchingKey(token);
-        if (!matchingKey) {
-            return reject('Token does not match keys');
-        }
+        if (!matchingKey) return reject('Token does not match keys');
 
         const publicKeyCertificate = '-----BEGIN CERTIFICATE-----\n' + matchingKey.x5c + '\n-----END CERTIFICATE-----';
 
         if (verifyOptions) {
             jwt.verify(token, publicKeyCertificate, verifyOptions, (err) => {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    return resolve(true);
-                }
+                err ? reject(err.message) : resolve(true);
             });
         } else {
             jwt.verify(token, publicKeyCertificate, (err) => {
-                if (err) {
-                    return reject(err.message);
-                } else {
-                    return resolve(true);
-                }
-            });
+                err ? reject(err.message) : resolve(true);
+            })
         }
+
     });
 };
 
-export default validateJWTToken;
+export default validateToken;
