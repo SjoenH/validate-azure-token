@@ -3,22 +3,15 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "es5",
-      "scripthost",
-      "es2015.promise"
-    ],
+    "lib": ["dom", "es5", "scripthost", "es2015.promise"],
     "module": "CommonJS",
     "outDir": "./lib",
+    "rootDir": "./src",
+    "skipLibCheck": true,
     "strict": true,
-    "target": "es5"
+    "target": "es5",
+    "ignoreDeprecations": "6.0"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/__tests__/*"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }

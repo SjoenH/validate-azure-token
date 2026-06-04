@@ -8,10 +8,10 @@ export default tseslint.config(
         ignores: ["lib/**"],
     },
     eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
     eslintConfigPrettier,
     {
         files: ["**/*.ts"],
+        extends: tseslint.configs.recommendedTypeChecked,
         languageOptions: {
             globals: globals.node,
             parserOptions: {

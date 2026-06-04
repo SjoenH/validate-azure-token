@@ -1,5 +1,5 @@
-import jwt, { VerifyOptions } from "jsonwebtoken";
-import { getMatchingKey } from "./getMatchingKey";
+import jwt, { VerifyOptions } from 'jsonwebtoken';
+import { getMatchingKey } from './getMatchingKey';
 
 /**
  * Validate your Azure Bearer Token
@@ -8,31 +8,31 @@ import { getMatchingKey } from "./getMatchingKey";
  * @returns {*}
  */
 const validateToken = async (token: string, verifyOptions: VerifyOptions = {}): Promise<true> => {
-    if (!token) {
-        throw new Error("Missing JWT token");
-    }
+  if (!token) {
+    throw new Error('Missing JWT token');
+  }
 
-    const matchingKey = await getMatchingKey(token);
-    if (!matchingKey) {
-        throw new Error("Token does not match Azure signing keys");
-    }
+  const matchingKey = await getMatchingKey(token);
+  if (!matchingKey) {
+    throw new Error('Token does not match Azure signing keys');
+  }
 
-    const publicKeyCertificate = `-----BEGIN CERTIFICATE-----\n${matchingKey.x5c}\n-----END CERTIFICATE-----`;
-    const resolvedVerifyOptions: VerifyOptions = {
-        algorithms: ["RS256"],
-        ...verifyOptions,
-    };
+  const publicKeyCertificate = `-----BEGIN CERTIFICATE-----\n${matchingKey.x5c}\n-----END CERTIFICATE-----`;
+  const resolvedVerifyOptions: VerifyOptions = {
+    algorithms: ['RS256'],
+    ...verifyOptions,
+  };
 
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, publicKeyCertificate, resolvedVerifyOptions, (err) => {
-            if (err) {
-                reject(err);
-                return;
-            }
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, publicKeyCertificate, resolvedVerifyOptions, (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
 
-            resolve(true);
-        });
+      resolve(true);
     });
+  });
 };
 
 export default validateToken;

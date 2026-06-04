@@ -20,7 +20,7 @@
     "prepare": "yarn build",
     "prepublishOnly": "yarn lint",
     "preversion": "yarn lint",
-    "version": "yarn format && git add -A src"
+    "version": "yarn format && git add -A"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.3",
