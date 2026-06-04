@@ -1,5 +1,5 @@
-import jwt, {VerifyOptions} from 'jsonwebtoken';
-import {getMatchingKey} from "./getMatchingKey";
+import jwt, { VerifyOptions } from "jsonwebtoken";
+import { getMatchingKey } from "./getMatchingKey";
 
 /**
  * Validate your Azure Bearer Token
@@ -7,25 +7,31 @@ import {getMatchingKey} from "./getMatchingKey";
  * @param verifyOptions
  * @returns {*}
  */
-const validateToken = async (token: string, verifyOptions: VerifyOptions | undefined): Promise<string | unknown> => {
-    return new Promise(async (resolve, reject) => {
-        if (!token) return reject('Missing JWT token');
+const validateToken = async (token: string, verifyOptions: VerifyOptions = {}): Promise<true> => {
+    if (!token) {
+        throw new Error("Missing JWT token");
+    }
 
-        const matchingKey = await getMatchingKey(token);
-        if (!matchingKey) return reject('Token does not match keys');
+    const matchingKey = await getMatchingKey(token);
+    if (!matchingKey) {
+        throw new Error("Token does not match Azure signing keys");
+    }
 
-        const publicKeyCertificate = '-----BEGIN CERTIFICATE-----\n' + matchingKey.x5c + '\n-----END CERTIFICATE-----';
+    const publicKeyCertificate = `-----BEGIN CERTIFICATE-----\n${matchingKey.x5c}\n-----END CERTIFICATE-----`;
+    const resolvedVerifyOptions: VerifyOptions = {
+        algorithms: ["RS256"],
+        ...verifyOptions,
+    };
 
-        if (verifyOptions) {
-            jwt.verify(token, publicKeyCertificate, verifyOptions, (err) => {
-                err ? reject(err.message) : resolve(true);
-            });
-        } else {
-            jwt.verify(token, publicKeyCertificate, (err) => {
-                err ? reject(err.message) : resolve(true);
-            })
-        }
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, publicKeyCertificate, resolvedVerifyOptions, (err) => {
+            if (err) {
+                reject(err);
+                return;
+            }
 
+            resolve(true);
+        });
     });
 };
 
