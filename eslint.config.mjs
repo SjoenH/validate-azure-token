@@ -23,7 +23,7 @@ export default tseslint.config(
             globals: globals.node,
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: ["src/__tests__/*.ts"],
+                    allowDefaultProject: ["src/__tests__/*.ts", "vite.config.ts"],
                     defaultProject: "tsconfig.test.json",
                 },
                 tsconfigRootDir: import.meta.dirname,
