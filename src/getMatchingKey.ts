@@ -12,7 +12,7 @@ type AzureKeySetResponse = {
 let possibleKeys: AzureKey[] = [];
 // This list is probably only correct for 24 hours. Let's clear the cache every 12 hours to be on the safe side...
 const clearCacheTimer = setInterval(() => (possibleKeys = []), 1000 * 60 * 60 * 12);
-clearCacheTimer.unref?.();
+clearCacheTimer.unref();
 
 function decodeTokenHeader(token: string): { x5t?: string } {
   const tokenParts = token.split('.');
